@@ -144,6 +144,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="batch_matching.h" />
     <ClInclude Include="byte_pattern.h" />
     <ClInclude Include="font.h" />
     <ClInclude Include="game.h" />
@@ -151,6 +152,7 @@
     <ClInclude Include="table.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="batch_matching.cpp" />
     <ClCompile Include="byte_pattern.cpp" />
     <ClCompile Include="dllmain.cpp" />
     <ClCompile Include="font.cpp" />

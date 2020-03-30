@@ -24,12 +24,12 @@ public:
 
     BinaryFile() = default;
 
-    BinaryFile(const std::filesystem::path &filename, OpenMode method)
+    BinaryFile(const std::experimental::filesystem::v1::path &filename, OpenMode method)
     {
         Open(filename, method);
     }
 
-    bool Open(const std::filesystem::path &filename, OpenMode method)
+    bool Open(const std::experimental::filesystem::v1::path &filename, OpenMode method)
     {
         const char *method_str;
 
@@ -76,7 +76,7 @@ public:
         return Opened();
     }
 
-    BinaryFile &Seek(std::int64_t offset, SeekMode mode)
+    BinaryFile &Seek(long offset, SeekMode mode)
     {
         int temp;
 
@@ -98,14 +98,14 @@ public:
             return *this;
         }
 
-        _fseeki64(m_pFile, offset, temp);
+        fseek(m_pFile, offset, temp);
 
         return *this;
     }
 
-    std::int64_t Tell() const
+    long Tell() const
     {
-        return _ftelli64(m_pFile);
+        return ftell(m_pFile);
     }
 
     BinaryFile &Read(void *buffer, std::size_t size)

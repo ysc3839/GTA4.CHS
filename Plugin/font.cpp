@@ -68,7 +68,7 @@ namespace Font
 
     float GetCHSCharacterSizeNormal()
     {
-        std::uint8_t index = Game::Graphics_GetRenderIndex();
+        std::uint8_t index = Game::Font_GetRenderIndex();
 
         return ((fChsWidth / *Game::Addresses.pFont_ResolutionX + Game::Addresses.pFont_Details[index].fEdgeSize2) * Game::Addresses.pFont_Details[index].fScaleX);
     }
@@ -158,11 +158,11 @@ namespace Font
         Game::Font_Render2DPrimitive(&screenrect, &texturerect, Game::Addresses.pFont_RenderState->field_18, false);
     }
 
-    void PrintCharDispatch(float posx, float posy, std::uint16_t character, int mode)
+    void PrintCharDispatch(float posx, float posy, std::uint16_t character, bool buffered)
     {
         if (Game::Addresses.pFont_RenderState->TokenType != 0 || IsNaiveCharacter(character + 0x20))
         {
-            Game::Font_PrintChar(posx, posy, character, mode);
+            Game::Font_PrintChar(posx, posy, character, buffered);
         }
         else
         {

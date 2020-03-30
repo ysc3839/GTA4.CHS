@@ -8,8 +8,6 @@ namespace Game
     {
         //80 7C 24 08 00 A1
         void* pGraphics_SetRenderState;
-        //A1 ? ? ? ? 83 F8 FF 75 1E
-        void* pGraphics_GetRenderIndex;
 
         //85 C9 53 55 56 57 74 40 两个结果，选哪个都可以
         void* pDictionary_GetElementByKey;
@@ -23,6 +21,8 @@ namespace Game
         Font::CFontRenderState* pFont_RenderState;
         //D8 35 (? ? ? ?) 5E D8 05
         float* pFont_ResolutionX;
+        //A1 ? ? ? ? 83 F8 FF 75 1E
+        void* pFont_GetRenderIndex;
         //83 EC 34 83 3D ? ? ? ? FF
         void* pFont_PrintChar;
         //83 EC 08 56 57 E8
@@ -38,12 +38,12 @@ namespace Game
     void GetMemoryAddresses();
 
     void Graphics_SetRenderState(void* texture, int = 1);
-    std::uint8_t Graphics_GetRenderIndex();
 
     void* Dictionary_GetElementByKey(void* dictionary, std::uint32_t hash);
 
     std::uint32_t Hash_HashStringFromSeediCase(const char* str, std::uint32_t hash = 0);
 
+    std::uint8_t Font_GetRenderIndex();
     float Font_GetCharacterSizeNormal(std::uint16_t character);
     float Font_GetCharacterSizeDrawing(std::uint16_t character, bool use_extra_width);
     void Font_Render2DPrimitive(const Font::rageRect* screen_rect, const Font::rageRect* texture_rect, std::uint32_t color, bool buffered);

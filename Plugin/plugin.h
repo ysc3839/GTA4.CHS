@@ -3,5 +3,5 @@
 
 namespace Plugin
 {
-    void Init(HMODULE);
+    bool Init(HMODULE);
 };

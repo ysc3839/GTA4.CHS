@@ -30,6 +30,9 @@
     <ClInclude Include="table.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="batch_matching.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="byte_pattern.cpp">
@@ -48,6 +51,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="table.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="batch_matching.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

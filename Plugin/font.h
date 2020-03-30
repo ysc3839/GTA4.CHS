@@ -108,7 +108,7 @@ namespace Font
 
     std::uint16_t* SkipAWord(std::uint16_t*);
 
-    void PrintCharDispatch(float, float, std::uint16_t, int);
+    void PrintCharDispatch(float, float, std::uint16_t, bool);
     void PrintCHSChar(float, float, std::uint16_t);
 
     void* __fastcall LoadTextureCB(void*, int, std::uint32_t);

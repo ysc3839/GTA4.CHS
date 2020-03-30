@@ -1,7 +1,7 @@
 ﻿#include "IVText.h"
 
 using namespace std;
-using namespace std::filesystem;
+using namespace std::experimental::filesystem::v1;
 
 void IVText::Process0Arg()
 {
@@ -189,7 +189,7 @@ void IVText::GenerateBinary(const tPath& output_binary) const
     BinaryFile file(output_binary, BinaryFile::OpenMode::WriteOnly);
 
     std::vector<uint8_t> buffer;
-    long long writePostion;
+    long writePostion;
 
     GXTHeader gxtHeader;
 

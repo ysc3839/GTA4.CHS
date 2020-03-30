@@ -11,7 +11,14 @@ using namespace std::experimental::filesystem::v1;
 
 memory_pointer byte_pattern::get(size_t index) const
 {
-    return this->_results.at(index);
+    if (this->_results.size() < (index + 1))
+    {
+        return nullptr;
+    }
+    else
+    {
+        return this->_results.at(index);
+    }
 }
 
 std::vector<memory_pointer> byte_pattern::get() const
@@ -31,7 +38,7 @@ void byte_pattern::start_log(const wchar_t *log_name)
     wchar_t exe_path[512];
     wchar_t filename[512];
 
-    swprintf(filename, 512, L"pattern_%s.log", log_name);
+    swprintf(filename, 512, L"pattern.%s.log", log_name);
 
     GetModuleFileNameW(NULL, exe_path, 512);
 
