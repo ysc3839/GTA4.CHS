@@ -173,33 +173,34 @@ namespace Font
     __declspec(naked) void GetStringWidthHook()
     {
         static void* retaddr;
+        //看看旧的idb怎么搞
 
         __asm
         {
-            pop retaddr;
+            pop retaddr; //91BDD5
 
-            movzx eax, word ptr[ebx];
-            mov cl, [esp + 0x10BC];
+            movzx eax, word ptr[esi];
+            mov cl, [ebp + 0xC];
             cmp ax, ' ';
             jz space;
             push eax;
             call IsNaiveCharacter;
             add esp, 4;
             test al, al;
-            movzx eax, word ptr[ebx];
-            mov cl, [esp + 0x10BC];
+            movzx eax, word ptr[esi];
+            mov cl, [ebp + 0xC];
             jnz normal;
             jmp chs;
 
         space:
-            mov edx, retaddr;
-            add edx, 0xB;
-            jmp edx;
+            add retaddr, 3;
+            push retaddr;
+            ret;
 
         normal:
-            mov edx, retaddr;
-            add edx, 0x13;
-            jmp edx;
+            add retaddr, 0xB;
+            push retaddr;
+            ret;
 
         chs:
             test cl, cl;
@@ -207,9 +208,9 @@ namespace Font
             mov dl, [esp + 0x13];
             test dl, dl;
             jz normal;
-            mov edx, retaddr;
-            add edx, 0x274;
-            jmp edx;
+            add retaddr, 0x31;
+            push retaddr;
+            ret;
         }
     }
 }

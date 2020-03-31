@@ -367,12 +367,10 @@ std::string byte_pattern::make_bytes_literal(memory_pointer pointer, std::size_t
 
 void byte_pattern::debug_output() const
 {
-    //Spent *costed time*ms. Result(s) of pattern: *pattern literal*
-    //0xFFFFFFFF *Actual bytes*
     if (!log_stream().is_open())
         return;
 
-    log_stream() << hex << uppercase << fixed;
+    log_stream() << hex << uppercase << fixed << std::setprecision(2);
 
     log_stream() << "Result(s) of pattern in " << _spent << "ms: " << _literal << '\n';
 
