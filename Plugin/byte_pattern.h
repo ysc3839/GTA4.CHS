@@ -60,6 +60,8 @@ class byte_pattern
 
     std::ptrdiff_t _bmbc[256];
 
+    static std::uintptr_t _log_base;
+
     static std::ofstream& log_stream();
 
     static std::vector<std::string> split_pattern(const char* literal);
@@ -86,6 +88,7 @@ public:
     byte_pattern& reset_module();
     byte_pattern& set_module(memory_pointer module);
     byte_pattern& set_range(memory_pointer beg, memory_pointer end);
+    static void set_log_base(std::uintptr_t address);
 
     byte_pattern& search();
 

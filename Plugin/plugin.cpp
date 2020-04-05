@@ -13,6 +13,8 @@ namespace Plugin
 {
     void RegisterPatchSteps()
     {
+        byte_pattern::set_log_base(0x401000);
+
         //变量和函数的地址
         batch_matching::get_instance().registerStep("A1 ? ? ? ? 80 7C 24 08 00", 1, [&](const std::vector<memory_pointer> &addresses)
         {
@@ -54,7 +56,7 @@ namespace Plugin
         //调试确定实际位置
         batch_matching::get_instance().registerStep("E8 ? ? ? ? 83 C4 08 8B CE 50 E8 ? ? ? ? 80 3D", 2, [&](const std::vector<memory_pointer> &addresses)
         {
-            Game::Addresses.pHash_HashStringFromSeediCase = injector::GetBranchDestination(addresses[1].i(0)).get();
+            Game::Addresses.pHash_HashStringFromSeediCase = injector::GetBranchDestination(addresses[0].i(0)).get();
             Game::Addresses.pDictionary_GetElementByKey = injector::GetBranchDestination(addresses[0].i(11)).get();
         });
 

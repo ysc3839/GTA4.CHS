@@ -7,7 +7,7 @@ using namespace std;
 using namespace std::chrono;
 using namespace std::experimental::filesystem::v1;
 
-#pragma warning(disable:4996)
+std::uintptr_t byte_pattern::_log_base;
 
 memory_pointer byte_pattern::get(size_t index) const
 {
@@ -96,8 +96,14 @@ byte_pattern &byte_pattern::set_range(memory_pointer beg, memory_pointer end)
 {
     this->_range.first = beg;
     this->_range.second = end;
+    _log_base = beg;
 
     return *this;
+}
+
+void byte_pattern::set_log_base(std::uintptr_t address)
+{
+    _log_base = address;
 }
 
 byte_pattern &byte_pattern::search()
@@ -246,6 +252,7 @@ void byte_pattern::get_module_range(memory_pointer module)
 
     _range.first = module;
     _range.second = module.i(ntHeader->OptionalHeader.SizeOfImage);
+    _log_base = module;
 }
 
 void byte_pattern::clear()
@@ -379,7 +386,7 @@ void byte_pattern::debug_output() const
         for_each_result(
             [this](memory_pointer pointer)
         {
-            log_stream() << "0x" << (pointer.i() - this->_range.first + 0x400400) << " | " << make_bytes_literal(pointer, _pattern.size()) << '\n';
+            log_stream() << "0x" << (pointer.i() - this->_range.first + _log_base) << " | " << make_bytes_literal(pointer, _pattern.size()) << '\n';
         });
     }
     else
