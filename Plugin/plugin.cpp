@@ -16,45 +16,45 @@ namespace Plugin
         byte_pattern::set_log_base(0x401000);
 
         //变量和函数的地址
-        batch_matching::get_instance().registerStep("A1 ? ? ? ? 80 7C 24 08 00", 1, [&](const std::vector<memory_pointer> &addresses)
+        batch_matching::get_instance().registerStep("A1 ? ? ? ? 80 7C 24 08 00", 1, [](const std::vector<memory_pointer> &addresses)
         {
             Game::Addresses.pGraphics_SetRenderState = addresses[0].p();
         });
-        batch_matching::get_instance().registerStep("8B 34 ED ? ? ? ? 0F 2E C1", 1, [&](const std::vector<memory_pointer> &addresses)
+        batch_matching::get_instance().registerStep("8B 34 ED ? ? ? ? 0F 2E C1", 1, [](const std::vector<memory_pointer> &addresses)
         {
             Game::Addresses.pFont_Details = *addresses[0].p<Font::CFontDetails *>(3);
         });
-        batch_matching::get_instance().registerStep("81 3D ? ? ? ? AD 7F 33 31", 2, [&](const std::vector<memory_pointer> &addresses)
+        batch_matching::get_instance().registerStep("81 3D ? ? ? ? AD 7F 33 31", 2, [](const std::vector<memory_pointer> &addresses)
         {
             Game::Addresses.pFont_RenderState = *addresses[0].p<Font::CFontRenderState*>(2);
         });
-        batch_matching::get_instance().registerStep("F3 0F 11 05 ? ? ? ? 66 0F 6E 84 24 AC 00 00", 1, [&](const std::vector<memory_pointer> &addresses)
+        batch_matching::get_instance().registerStep("F3 0F 11 05 ? ? ? ? 66 0F 6E 84 24 AC 00 00", 1, [](const std::vector<memory_pointer> &addresses)
         {
             Game::Addresses.pFont_ResolutionX = *addresses[0].p<float *>(4);
         });
-        batch_matching::get_instance().registerStep("A1 ? ? ? ? 83 F8 FF 75 1E", 1, [&](const std::vector<memory_pointer> &addresses)
+        batch_matching::get_instance().registerStep("A1 ? ? ? ? 83 F8 FF 75 1E", 1, [](const std::vector<memory_pointer> &addresses)
         {
             Game::Addresses.pFont_GetRenderIndex = addresses[0].p();
         });
-        batch_matching::get_instance().registerStep("83 EC 30 83 3D ? ? ? ? FF", 1, [&](const std::vector<memory_pointer> &addresses)
+        batch_matching::get_instance().registerStep("83 EC 30 83 3D ? ? ? ? FF", 1, [](const std::vector<memory_pointer> &addresses)
         {
             Game::Addresses.pFont_PrintChar = addresses[0].p();
         });
-        batch_matching::get_instance().registerStep("51 55 56 E8", 1, [&](const std::vector<memory_pointer> &addresses)
+        batch_matching::get_instance().registerStep("51 55 56 E8", 1, [](const std::vector<memory_pointer> &addresses)
         {
             Game::Addresses.pFont_GetCharacterSizeNormal = addresses[0].p();
         });
-        batch_matching::get_instance().registerStep("8A 0D ? ? ? ? 0F B6 D1", 1, [&](const std::vector<memory_pointer> &addresses)
+        batch_matching::get_instance().registerStep("8A 0D ? ? ? ? 0F B6 D1", 1, [](const std::vector<memory_pointer> &addresses)
         {
             Game::Addresses.pFont_GetCharacterSizeDrawing = addresses[0].p();
         });
-        batch_matching::get_instance().registerStep("83 EC 10 8B 44 24 14 F3 0F 7E 00", 1, [&](const std::vector<memory_pointer> &addresses)
+        batch_matching::get_instance().registerStep("83 EC 10 8B 44 24 14 F3 0F 7E 00", 1, [](const std::vector<memory_pointer> &addresses)
         {
             Game::Addresses.pFont_Render2DPrimitive = addresses[0].p();
         });
         //被混淆的函数
         //调试确定实际位置
-        batch_matching::get_instance().registerStep("E8 ? ? ? ? 83 C4 08 8B CE 50 E8 ? ? ? ? 80 3D", 2, [&](const std::vector<memory_pointer> &addresses)
+        batch_matching::get_instance().registerStep("E8 ? ? ? ? 83 C4 08 8B CE 50 E8 ? ? ? ? 80 3D", 2, [](const std::vector<memory_pointer> &addresses)
         {
             Game::Addresses.pHash_HashStringFromSeediCase = injector::GetBranchDestination(addresses[0].i(0)).get();
             Game::Addresses.pDictionary_GetElementByKey = injector::GetBranchDestination(addresses[0].i(11)).get();

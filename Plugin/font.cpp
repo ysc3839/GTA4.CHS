@@ -173,11 +173,10 @@ namespace Font
     __declspec(naked) void GetStringWidthHook()
     {
         static void* retaddr;
-        //看看旧的idb怎么搞
 
         __asm
         {
-            pop retaddr; //91BDD5
+            pop retaddr; //91BE45
 
             movzx eax, word ptr[esi];
             mov cl, [ebp + 0xC];
@@ -193,7 +192,7 @@ namespace Font
             jmp chs;
 
         space:
-            add retaddr, 3;
+            add retaddr, 0x3;
             push retaddr;
             ret;
 
@@ -205,10 +204,10 @@ namespace Font
         chs:
             test cl, cl;
             jnz normal;
-            mov dl, [esp + 0x13];
+            mov dl, [esp + 0x12];
             test dl, dl;
             jz normal;
-            add retaddr, 0x31;
+            add retaddr, 0x22E;
             push retaddr;
             ret;
         }
