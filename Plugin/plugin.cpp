@@ -13,7 +13,7 @@ namespace Plugin
 {
     void RegisterPatchSteps()
     {
-        byte_pattern::set_log_base(0x401000);
+        byte_pattern::set_log_base(0x400000);
 
         //变量和函数的地址
         batch_matching::get_instance().registerStep("A1 ? ? ? ? 80 7C 24 08 00", 1, [](const std::vector<memory_pointer> &addresses)
@@ -52,12 +52,13 @@ namespace Plugin
         {
             Game::Addresses.pFont_Render2DPrimitive = addresses[0].p();
         });
-        //被混淆的函数
-        //调试确定实际位置
-        batch_matching::get_instance().registerStep("E8 ? ? ? ? 83 C4 08 8B CE 50 E8 ? ? ? ? 80 3D", 2, [](const std::vector<memory_pointer> &addresses)
+        batch_matching::get_instance().registerStep("8B 54 24 08 53 56 8B 74 24 0C 80 3E 22", 1, [](const std::vector<memory_pointer> &addresses)
         {
-            Game::Addresses.pHash_HashStringFromSeediCase = injector::GetBranchDestination(addresses[0].i(0)).get();
-            Game::Addresses.pDictionary_GetElementByKey = injector::GetBranchDestination(addresses[0].i(11)).get();
+            Game::Addresses.pHash_HashStringFromSeediCase = addresses[0].p();
+        });
+        batch_matching::get_instance().registerStep("53 55 56 57 8B F9 85 FF 74 3F", 1, [](const std::vector<memory_pointer> &addresses)
+        {
+            Game::Addresses.pDictionary_GetElementByKey = addresses[0].p();
         });
 
         //获取字符串宽度
@@ -66,20 +67,19 @@ namespace Plugin
             injector::MakeCALL(addresses[0].i(), Font::GetStringWidthHook);
         });
 
+        //跳过单词
+        batch_matching::get_instance().registerStep("57 8B 7C 24 08 85 FF 75 04 33 C0 5F C3 56", 1, [](const std::vector<memory_pointer> &addresses)
+        {
+            injector::MakeCALL(addresses[0].i(), Font::SkipAWord);
+        });
+
         //获取字符宽度
         batch_matching::get_instance().registerStep("83 C0 E0 50 E8 ? ? ? ? D9 5C 24", 2, [](const std::vector<memory_pointer> &addresses)
         {
             injector::MakeCALL(addresses[0].i(4), Font::GetCharacterSizeNormalDispatch);
             injector::MakeCALL(addresses[1].i(4), Font::GetCharacterSizeNormalDispatch);
         });
-        batch_matching::get_instance().registerStep("6A 01 56 E8 ? ? ? ? D9 5C 24 38", 1, [](const std::vector<memory_pointer> &addresses)
-        {
-            injector::MakeCALL(addresses[0].i(3), Font::GetCharacterSizeDrawingDispatch);
-        });
-        batch_matching::get_instance().registerStep("6A 00 56 E8 ? ? ? ? D9 5C 24 34 E8", 1, [](const std::vector<memory_pointer> &addresses)
-        {
-            injector::MakeCALL(addresses[0].i(3), Font::GetCharacterSizeDrawingDispatch);
-        });
+
         batch_matching::get_instance().registerStep("6A 01 57 E8 ? ? ? ? D9 5C 24 30", 1, [](const std::vector<memory_pointer> &addresses)
         {
             injector::MakeCALL(addresses[0].i(3), Font::GetCharacterSizeDrawingDispatch);
@@ -88,6 +88,7 @@ namespace Plugin
         {
             injector::MakeCALL(addresses[0].i(5), Font::GetCharacterSizeDrawingDispatch);
         });
+
         //这些地方只读了一个字节..但是输入应该不是宽字符
         //batch_matching::get_instance().registerStep("66 0F BE 06 0F B7 C0 50 E8", 1, [](const std::vector<memory_pointer> &addresses) {injector::MakeCALL(addresses[0].i(8), Font::GetCharacterSizeNormalDispatch); });
         //batch_matching::get_instance().registerStep("66 0F BE 04 1E 0F B7 C0 50 E8", 2, [](const std::vector<memory_pointer> &addresses) {injector::MakeCALL(addresses[0].i(9), Font::GetCharacterSizeNormalDispatch); injector::MakeCALL(addresses[1].i(9), Font::GetCharacterSizeNormalDispatch); });
@@ -96,10 +97,6 @@ namespace Plugin
         batch_matching::get_instance().registerStep("E8 ? ? ? ? 6A 01 57 E8 ? ? ? ? D9 5C 24 30", 1, [](const std::vector<memory_pointer> &addresses)
         {
             injector::MakeCALL(addresses[0].i(), Font::PrintCharDispatch);
-        });
-        batch_matching::get_instance().registerStep("F3 0F 11 04 24 E8 ? ? ? ? 83 C4 10 E8", 1, [](const std::vector<memory_pointer> &addresses)
-        {
-            injector::MakeCALL(addresses[0].i(5), Font::PrintCharDispatch);
         });
         batch_matching::get_instance().registerStep("F3 0F 11 0C 24 E8 ? ? ? ? 8B 35", 1, [](const std::vector<memory_pointer> &addresses)
         {

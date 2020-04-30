@@ -3,10 +3,12 @@
 不同语言字距不同的问题
 
 Ctrl+X显示所有函数的调用
+
 CFontRenderState的魔数是31337FAD
 "[PROP]"定位第一个CFontInfo
 "[RESOLUTION]"
-FontDetails有3个，在GetCharacterSize里面通过GetRenderIndex选择
+
+FontDetails有2个，在GetCharacterSize里面通过GetRenderIndex选择
 CFontInfo有4个，1342
 
 对于混淆的函数，根据实际运行情况确定pattern
