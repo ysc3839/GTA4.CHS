@@ -7,7 +7,7 @@ using namespace std;
 using namespace std::chrono;
 using namespace std::experimental::filesystem::v1;
 
-std::uintptr_t byte_pattern::_log_base;
+std::uintptr_t byte_pattern::_log_base = 0x400000;
 
 memory_pointer byte_pattern::get(size_t index) const
 {

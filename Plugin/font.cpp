@@ -24,13 +24,15 @@ namespace Font
     {
         void* result = Game::Dictionary_GetElementByKey(pDictionary, hash);
 
-        pChsFont = Game::Dictionary_GetElementByKey(pDictionary, Game::Hash_HashStringFromSeediCase("font4"));
+        pChsFont = Game::Dictionary_GetElementByKey(pDictionary, Game::Hash_HashStringFromSeediCase("font_chs"));
 
         return result;
     }
 
     std::uint16_t* SkipAWord(std::uint16_t* text)
     {
+        //跳过一个英语单词，或者一个汉字
+
         if (!text)
         {
             return text;
@@ -202,9 +204,9 @@ namespace Font
             ret;
 
         chs:
-            test cl, cl;
+            test cl, cl; //get all
             jnz normal;
-            mov dl, [esp + 0x12];
+            mov dl, [esp + 0x12]; //has char
             test dl, dl;
             jz normal;
             add retaddr, 0x22E;
