@@ -103,7 +103,7 @@ namespace Plugin
             injector::MakeCALL(addresses[0].i(5), Font::PrintCharDispatch);
         });
 
-        //加载font4，即中文字库
+        //加载font_chs，即中文字库
         batch_matching::get_instance().registerStep("8B CE 50 E8 ? ? ? ? 80 3D ? ? ? ? 6A", 2, [](const std::vector<memory_pointer> &addresses)
         {
             injector::MakeCALL(addresses[0].i(3), Font::LoadTextureCB);
