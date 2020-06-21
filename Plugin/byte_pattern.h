@@ -77,7 +77,7 @@ class byte_pattern
     void debug_output() const;
 
 public:
-    static void start_log(const wchar_t* log_name);
+    static void start_log(const char* log_name);
     static void shutdown_log();
 
     byte_pattern();

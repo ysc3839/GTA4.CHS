@@ -31,16 +31,15 @@ memory_pointer byte_pattern::get_first() const
     return this->get(0);
 }
 
-void byte_pattern::start_log(const wchar_t *log_name)
+void byte_pattern::start_log(const char *log_name)
 {
+    char exe_path[512];
+
     shutdown_log();
 
-    wchar_t exe_path[512];
-    wchar_t filename[512];
+    std::string filename = fmt::sprintf("pattern.%s.log", log_name);
 
-    swprintf(filename, 512, L"pattern.%s.log", log_name);
-
-    GetModuleFileNameW(NULL, exe_path, 512);
+    GetModuleFileNameA(nullptr, exe_path, 512);
 
     log_stream().open(path{ exe_path }.parent_path() / filename, ios::trunc);
 }
@@ -302,8 +301,7 @@ void byte_pattern::bm_preprocess()
 
 void byte_pattern::bm_search()
 {
-    steady_clock::time_point start, end;
-    duration<double, milli> dur;
+    steady_clock::time_point start;
 
     const uint8_t *pbytes = this->_pattern.data();
     const uint8_t *pmask = this->_mask.data();
@@ -351,9 +349,7 @@ void byte_pattern::bm_search()
 
     }
 
-    end = steady_clock::now();
-    dur = end - start;
-    _spent = dur.count();
+    _spent = static_cast<double>(duration_cast<microseconds>(steady_clock::now() - start).count()) / 1000.0;
 }
 
 std::string byte_pattern::make_bytes_literal(memory_pointer pointer, std::size_t length)
@@ -362,11 +358,7 @@ std::string byte_pattern::make_bytes_literal(memory_pointer pointer, std::size_t
 
     for (size_t i = 0; i < length; i++)
     {
-        char buffer[10];
-
-        sprintf(buffer, "%02X", (int)*pointer.p<uint8_t>(i));
-        result += buffer;
-        result += ' ';
+        result += fmt::sprintf("%02X ", static_cast<int>(*pointer.p<uint8_t>(i)));
     }
 
     return result;
@@ -377,16 +369,14 @@ void byte_pattern::debug_output() const
     if (!log_stream().is_open())
         return;
 
-    log_stream() << hex << uppercase << fixed << std::setprecision(2);
-
-    log_stream() << "Result(s) of pattern in " << _spent << "ms: " << _literal << '\n';
+    log_stream() << fmt::sprintf("Result(s) of pattern in %.2lfms: %s\n", _spent, _literal);
 
     if (count() > 0)
     {
         for_each_result(
             [this](memory_pointer pointer)
         {
-            log_stream() << "0x" << (pointer.i() - this->_range.first + _log_base) << " | " << make_bytes_literal(pointer, _pattern.size()) << '\n';
+            log_stream() << fmt::sprintf("0x%08X | %s\n", (pointer.i() - this->_range.first + _log_base), make_bytes_literal(pointer, _pattern.size()));
         });
     }
     else

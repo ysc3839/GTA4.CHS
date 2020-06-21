@@ -5,7 +5,7 @@ BOOL WINAPI DllMain(HMODULE module, DWORD reason, void *reserved)
 {
     if (reason == DLL_PROCESS_ATTACH)
     {
-        byte_pattern::start_log(L"gta4.chs");
+        byte_pattern::start_log("gta4.chs");
         if (!Plugin::Init(module))
         {
             return FALSE;
