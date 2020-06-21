@@ -13,7 +13,7 @@ namespace Plugin
 {
     void RegisterPatchSteps()
     {
-        byte_pattern::set_log_base(0x400000);
+        byte_pattern::set_log_base(0x570000);
 
         //变量和函数的地址
         batch_matching::get_instance().registerStep("A1 ? ? ? ? 80 7C 24 08 00", 1, [](const std::vector<memory_pointer> &addresses)
@@ -133,7 +133,7 @@ namespace Plugin
         if (batch_matching::get_instance().isAllSucceed())
         {
             globalTable.LoadTable(std::experimental::filesystem::v1::path{ PluginPath }.parent_path() / "GTA4.CHS/table.dat");
-            batch_matching::get_instance().runCallbacks();
+            //batch_matching::get_instance().runCallbacks();
             return true;
         }
         else

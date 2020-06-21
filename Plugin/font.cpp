@@ -24,7 +24,7 @@ namespace Font
     {
         void* result = Game::Dictionary_GetElementByKey(pDictionary, hash);
 
-        pChsFont = Game::Dictionary_GetElementByKey(pDictionary, Game::Hash_HashStringFromSeediCase("font4"));
+        pChsFont = Game::Dictionary_GetElementByKey(pDictionary, Game::Hash_HashStringFromSeediCase("font_chs"));
 
         return result;
     }
