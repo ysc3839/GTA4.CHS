@@ -316,16 +316,16 @@ void IVText::GenerateCollection(const tPath& output_text) const
 
 void IVText::GenerateTable(const tPath& output_binary) const
 {
-    vector<CharacterDataForIO> datas;
+    vector<CharacterData> datas;
 
-    CharacterDataForIO data;
+    CharacterData data;
 
     data.pos.row = 0;
     data.pos.column = 0;
 
     for (auto chr : m_Collection)
     {
-        data.character = chr;
+        data.code = chr;
         if (data.pos.column == 64)
         {
             ++data.pos.row;

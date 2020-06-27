@@ -61,6 +61,7 @@ namespace Plugin
             Game::Addresses.pDictionary_GetElementByKey = addresses[0].p();
         });
 
+#pragma message("出错位置")
         //获取字符串宽度
         batch_matching::get_instance().registerStep("0F B7 06 83 F8 20", 1, [](const std::vector<memory_pointer> &addresses)
         {
@@ -70,7 +71,7 @@ namespace Plugin
         //跳过单词
         batch_matching::get_instance().registerStep("57 8B 7C 24 08 85 FF 75 04 33 C0 5F C3 56", 1, [](const std::vector<memory_pointer> &addresses)
         {
-            injector::MakeCALL(addresses[0].i(), Font::SkipAWord);
+            injector::MakeJMP(addresses[0].i(), Font::SkipAWord);
         });
 
         //获取字符宽度
@@ -103,6 +104,7 @@ namespace Plugin
             injector::MakeCALL(addresses[0].i(5), Font::PrintCharDispatch);
         });
 
+
         //加载font_chs，即中文字库
         batch_matching::get_instance().registerStep("8B CE 50 E8 ? ? ? ? 80 3D ? ? ? ? 6A", 2, [](const std::vector<memory_pointer> &addresses)
         {
@@ -121,6 +123,7 @@ namespace Plugin
         //存档名字只取一个字节
 
         //不同语言的字符设置
+
     }
 
     bool Init(HMODULE module)
@@ -132,8 +135,8 @@ namespace Plugin
         batch_matching::get_instance().peformSearch();
         if (batch_matching::get_instance().isAllSucceed())
         {
-            globalTable.LoadTable(std::experimental::filesystem::v1::path{ PluginPath }.parent_path() / "GTA4.CHS/table.dat");
-            //batch_matching::get_instance().runCallbacks();
+            CCharacterTable::GlobalTable.LoadTable(std::experimental::filesystem::v1::path{ PluginPath }.parent_path() / "GTA4.CHS/table.dat");
+            batch_matching::get_instance().runCallbacks();
             return true;
         }
         else

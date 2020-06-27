@@ -38,9 +38,9 @@ struct CharacterPos
     std::uint32_t row, column;
 };
 
-struct CharacterDataForIO
+struct CharacterData
 {
-    std::uint32_t character;
+    std::uint32_t code;
     CharacterPos pos;
 };
 

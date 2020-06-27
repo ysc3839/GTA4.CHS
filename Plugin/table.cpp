@@ -1,22 +1,24 @@
 ﻿#include "table.h"
 
-CCharacterTable globalTable;
+CCharacterTable CCharacterTable::GlobalTable;
 
 void CCharacterTable::LoadTable(const std::experimental::filesystem::v1::path& filename)
 {
-    std::vector<CharacterDataForIO> buffer;
+    std::vector<CharacterData> buffer;
 
     BinaryFile file(filename, BinaryFile::OpenMode::ReadOnly);
 
+    m_Table.clear();
     file.Seek(0, BinaryFile::SeekMode::End);
     auto size = file.Tell();
     file.Seek(0, BinaryFile::SeekMode::Begin);
-    file.ReadArray(size / sizeof(CharacterDataForIO), buffer);
+    file.ReadArray(size / sizeof(CharacterData), buffer);
 
     m_Table.reserve(buffer.size() * 2);
+
     for (auto& entry : buffer)
     {
-        m_Table.insert_or_assign(entry.character, entry.pos);
+        m_Table.insert_or_assign(entry.code, entry.pos);
     }
 }
 

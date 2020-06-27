@@ -33,7 +33,7 @@ namespace Font
     {
         //跳过一个英语单词，或者一个汉字
 
-        if (!text)
+        if (text == nullptr)
         {
             return text;
         }
@@ -125,7 +125,7 @@ namespace Font
             return;
         }
 
-        auto pos = globalTable.GetCharPos(character);
+        auto pos = CCharacterTable::GlobalTable.GetCharPos(character);
 
         float sprite_width = fSpriteWidth / fTextureResolution;
         float character_width = (fChsWidth / *Game::Addresses.pFont_ResolutionX + Game::Addresses.pFont_RenderState->fEdgeSize) * Game::Addresses.pFont_RenderState->fScaleX;
