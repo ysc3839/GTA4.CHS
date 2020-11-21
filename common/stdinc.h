@@ -2,6 +2,7 @@
 
 #define NOMINMAX
 #define _CRT_SECURE_NO_WARNINGS
+#define _SILENCE_CXX17_ITERATOR_BASE_CLASS_DEPRECATION_WARNING
 
 #include <Windows.h>
 #include <cstdint>

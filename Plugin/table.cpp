@@ -2,7 +2,7 @@
 
 CCharacterTable CCharacterTable::GlobalTable;
 
-void CCharacterTable::LoadTable(const std::experimental::filesystem::v1::path& filename)
+void CCharacterTable::LoadTable(const std::filesystem::path& filename)
 {
     std::vector<CharacterData> buffer;
 

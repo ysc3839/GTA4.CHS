@@ -1,21 +1,20 @@
 #pragma once
+#include "../common/stdinc.h"
 #include "byte_pattern.h"
-#include <vector>
-#include <tuple>
-#include <functional>
 
 class batch_matching
 {
 public:
-    typedef std::function<void(const std::vector<memory_pointer> &)> callback_type;
-    typedef std::tuple<std::string, std::size_t, callback_type, std::vector<memory_pointer>> step_type;
+    typedef std::vector<memory_pointer> container_type;
+    typedef std::function<void(const container_type &)> callback_type;
+    typedef std::tuple<std::string, std::size_t, callback_type, container_type> step_type;
 
     static batch_matching &get_instance();
-    void registerStep(const char *pattern, std::size_t desiredSize, callback_type callback);
+    void register_step(const char *pattern, std::size_t desired_size, callback_type callback);
     void clear();
-    void peformSearch();
-    bool isAllSucceed() const;
-    void runCallbacks();
+    void perform_search();
+    bool is_all_succeed() const;
+    void run_callbacks();
 
 private:
     std::vector<step_type> _steps;
