@@ -46,6 +46,6 @@ namespace Game
     std::uint8_t Font_GetRenderIndex();
     float Font_GetCharacterSizeNormal(std::uint16_t character);
     float Font_GetCharacterSizeDrawing(std::uint16_t character, bool use_extra_width);
-    void Font_Render2DPrimitive(const Font::rageRect* screen_rect, const Font::rageRect* texture_rect, std::uint32_t color, bool buffered);
+    void Font_Render2DPrimitive(const Font::CRageRect* screen_rect, const Font::CRageRect* texture_rect, std::uint32_t color, bool buffered);
     void Font_PrintChar(float posx, float posy, std::uint16_t character, bool buffered);
 }

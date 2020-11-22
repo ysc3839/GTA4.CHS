@@ -34,9 +34,9 @@ namespace Game
         return injector::cstd<float(std::uint16_t, bool)>::call(Addresses.pFont_GetCharacterSizeDrawing, character, use_extra_width);
     }
 
-    void Font_Render2DPrimitive(const Font::rageRect* screen_rect, const Font::rageRect* texture_rect, std::uint32_t color, bool buffered)
+    void Font_Render2DPrimitive(const Font::CRageRect* screen_rect, const Font::CRageRect* texture_rect, std::uint32_t color, bool buffered)
     {
-        injector::cstd<void(const Font::rageRect*, const Font::rageRect*, std::uint32_t, bool)>::call(Addresses.pFont_Render2DPrimitive, screen_rect, texture_rect, color, buffered);
+        injector::cstd<void(const Font::CRageRect*, const Font::CRageRect*, std::uint32_t, bool)>::call(Addresses.pFont_Render2DPrimitive, screen_rect, texture_rect, color, buffered);
     }
 
     void Font_PrintChar(float posx, float posy, std::uint16_t character, bool buffered)

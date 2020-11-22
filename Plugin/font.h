@@ -3,7 +3,7 @@
 
 namespace Font
 {
-    struct rageRect
+    struct CRageRect
     {
         float fBottomLeftX;
         float fBottomLeftY;

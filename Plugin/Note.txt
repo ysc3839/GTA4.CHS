@@ -12,3 +12,24 @@ FontDetails有2个，在GetCharacterSize里面通过GetRenderIndex选择
 CFontInfo有4个，1342
 
 对于混淆的函数，根据实际运行情况确定pattern
+
+
+
+继承:
+E85F28 虚表
+CFontRenderString : CFontStringProcess
+CFontGetNumberlines : CFontStringProcess
+从"~%c~"找到CFont_ProcessStringToDisplay
+
+绘制电话文本
+94ABD4
+
+ESC菜单抬头文本
+5AD2D4 地图
+5AD367 简报
+5AD409 统计
+5AD49C 控制
+5AD52C 音频
+5AD5BC 显示
+5AD64C 画面
+5ADAF1 游戏

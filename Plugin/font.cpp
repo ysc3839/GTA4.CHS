@@ -17,7 +17,7 @@ namespace Font
 
     bool IsNaiveCharacter(std::uint16_t character)
     {
-        return (character < 0x100);
+        return (character < 0x100 || character == 0xFFFF);
     }
 
     void* __fastcall LoadTextureCB(void* pDictionary, int, std::uint32_t hash)
@@ -113,7 +113,7 @@ namespace Font
 
     void PrintCHSChar(float posx, float posy, std::uint16_t character)
     {
-        rageRect screenrect, texturerect;
+        CRageRect screenrect, texturerect;
 
         if (posy < -0.06558f || posy > 1.0f)
         {
