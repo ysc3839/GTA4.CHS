@@ -117,11 +117,9 @@ namespace Plugin
             injector::MakeJMP(addresses[0].i(), GetTextFileName);
         });
 
-        //Esc菜单鼠标指向只变色一个词
+        //Esc菜单抬头的鼠标热区，用两个单词的字符串测试
 
-        //存档名字只取一个字节
-
-        //不同语言的字符设置
+        //存档名字读取2字节
 
     }
 
