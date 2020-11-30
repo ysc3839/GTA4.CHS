@@ -5,6 +5,7 @@
 #define _SILENCE_CXX17_ITERATOR_BASE_CLASS_DEPRECATION_WARNING
 
 #include <Windows.h>
+#include <d3d9.h>
 #include <cstdint>
 #include <cstddef>
 #include <cstring>

@@ -15,6 +15,11 @@ namespace Game
         //8B 4C 24 08 56 8B 74 24 08 80 3E 22
         void* pHash_HashStringFromSeediCase;
 
+        //A1 (? ? ? ?) 68 ? ? ? ? 8B 08 68 ? ? ? ? 6A 14
+        IDirect3D9** ppDirect3D9;
+        //A1 ? ? ? ? 68 (? ? ? ?) 8B 08 68 ? ? ? ? 6A 14
+        IDirect3DDevice9** ppDirect3DDevice9;
+
         //8D 0C C5 (? ? ? ?) 51 8D
         Font::CFontDetails* pFont_Details;
         //83 C6 2C 83 C7 01 81 FE (? ? ? ?)

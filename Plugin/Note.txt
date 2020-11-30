@@ -15,13 +15,13 @@ CFontInfo有4个，1342
 
 
 
-继承:
+-------------1.2.0.43----------------------
 E85F28 虚表
 CFontRenderString : CFontStringProcess
 CFontGetNumberlines : CFontStringProcess
 从"~%c~"找到CFont_ProcessStringToDisplay
 
-绘制电话文本
+绘制手机屏幕文本
 94ABD4
 
 ESC菜单抬头文本
