@@ -33,3 +33,8 @@ ESC菜单抬头文本
 5AD5BC 显示
 5AD64C 画面
 5ADAF1 游戏
+
+namespace GTA4CHS
+{
+ class Game
+}
