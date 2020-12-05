@@ -116,7 +116,9 @@ public:
     static void PrintCharDispatch(float, float, std::uint16_t, bool);
     static void PrintCHSChar(float, float, std::uint16_t);
 
-    static void* __fastcall LoadTextureHook(void*, int, std::uint32_t);
+    static void* __fastcall LoadTextureHook(void*, int, std::uint32_t); //预渲染字符
+    static void* __fastcall UnloadTextureHook(); //释放字符纹理
+
     static void GetStringWidthHook();
     static const char* __stdcall GetTextFileNameHook(int);
 };

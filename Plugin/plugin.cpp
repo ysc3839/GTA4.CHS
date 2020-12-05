@@ -189,7 +189,9 @@ bool CPlugin::Init(HMODULE module)
     {
         //获得D3D设备后才预渲染字符
         FontObject.renderer.SetD3DDevice(*GameMeta.ppDirect3DDevice9);
-        FontObject.renderer.CacheChars(cache_chars);
+
+        //留到加载原有字库时执行
+        //FontObject.renderer.CacheChars(cache_chars);
         return true;
     }
     else

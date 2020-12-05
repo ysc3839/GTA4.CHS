@@ -1,4 +1,4 @@
-﻿Esc菜单鼠标指向只变色一个词
+﻿Esc菜单鼠标指向只变色一个word
 存档名字只取低字节的问题
 不同语言字距不同的问题
 
@@ -10,10 +10,6 @@ CFontRenderState的魔数是31337FAD
 
 FontDetails有2个，在GetCharacterSize里面通过GetRenderIndex选择
 CFontInfo有4个，1342
-
-对于混淆的函数，根据实际运行情况确定pattern
-
-
 
 -------------1.2.0.43----------------------
 E85F28 虚表
@@ -34,7 +30,4 @@ ESC菜单抬头文本
 5AD64C 画面
 5ADAF1 游戏
 
-namespace GTA4CHS
-{
- class Game
-}
+纹理
