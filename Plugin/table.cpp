@@ -1,6 +1,6 @@
 ﻿#include "table.h"
 
-CCharacterTable CCharacterTable::GlobalTable;
+CCharacterTable TableObject;
 
 void CCharacterTable::LoadTable(const std::filesystem::path& filename)
 {

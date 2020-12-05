@@ -1,12 +1,5 @@
 #include "batch_matching.h"
 
-batch_matching & batch_matching::get_instance()
-{
-    static batch_matching instance;
-
-    return instance;
-}
-
 void batch_matching::register_step(const char * pattern, std::size_t desired_size, callback_type callback)
 {
     _steps.emplace_back(pattern, desired_size, callback, container_type{});

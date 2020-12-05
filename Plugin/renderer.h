@@ -14,23 +14,8 @@
 
 struct SCharTexture
 {
-    //最后使用的
     int gta_width;
-    IDirect3DTexture9* pTexture;
-
-    SCharTexture()
-        :pTexture(nullptr)
-    {
-
-    }
-
-    ~SCharTexture()
-    {
-        if (pTexture != nullptr)
-        {
-            pTexture->Release();
-        }
-    }
+    IDirect3DTexture9* texture;
 };
 
 class CCharRenderer
@@ -54,10 +39,12 @@ public:
     bool FaceLoaded() const;
     void CloseFT();
 
+    void SetD3DDevice(IDirect3DDevice9* device);
+
     bool LoadFont(const std::filesystem::path& filename, int face_index = 0);
     void UnloadFont();
 
-    const SCharTexture& LazyGetCharData(std::uint16_t code);
+    SCharTexture LazyGetCharData(std::uint16_t code);
 
     void CacheChar(std::uint16_t code);
     void CacheChars(std::wstring_view wstr);
@@ -72,13 +59,18 @@ private:
     std::unordered_map<std::uint16_t, SCharTexture> m_charBuffer;
     SCharTexture m_specialChar;
 
+    IDirect3DDevice9* m_d3dDevice;
+
     bool m_isPRCMap; //否则为unicode
 
     bool InitializeFT();
     std::uint16_t Unicode2GB2312(std::uint16_t unic) const;
-    SCharTexture MakeCharData(std::uint16_t code) const;
-    static SCharTexture MakeSpecialChar();
+    SCharTexture MakeCharData(std::uint16_t code);
+    SCharTexture MakeSpecialChar();
+    SCharTexture GetSpecialChar();
 
     static float Fix26_6ToFloat(long fix_point);
     static float Fix16_16ToFloat(long fix_point);
+
+    static IDirect3DTexture9* PixelsToTexture(IDirect3DDevice9* dev, const std::vector<unsigned char>& pixels, int width, int height);
 };

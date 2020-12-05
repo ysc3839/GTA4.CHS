@@ -27,13 +27,16 @@
     <ClInclude Include="plugin.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="table.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="batch_matching.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="CCharRenderer.h">
+    <ClInclude Include="table.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="renderer.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="chars.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
@@ -53,13 +56,13 @@
     <ClCompile Include="plugin.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="table.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="batch_matching.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="CCharRenderer.cpp">
+    <ClCompile Include="table.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="renderer.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

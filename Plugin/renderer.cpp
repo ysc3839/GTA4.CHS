@@ -1,8 +1,9 @@
-#include "CCharRenderer.h"
+#include "renderer.h"
 
 CCharRenderer::CCharRenderer()
     :m_ftLibrary(nullptr),
     m_ftFace(nullptr),
+    m_d3dDevice(nullptr),
     m_isPRCMap(false)
 {
     InitializeFT();
@@ -13,6 +14,7 @@ CCharRenderer::CCharRenderer(CCharRenderer&& another) noexcept
 {
     m_ftLibrary = another.m_ftLibrary;
     m_ftFace = another.m_ftFace;
+    m_d3dDevice = another.m_d3dDevice;
     m_charBuffer = std::move(another.m_charBuffer);
     m_isPRCMap = another.m_isPRCMap;
 }
@@ -23,6 +25,7 @@ CCharRenderer& CCharRenderer::operator=(CCharRenderer&& another) noexcept
 
     m_ftLibrary = another.m_ftLibrary;
     m_ftFace = another.m_ftFace;
+    m_d3dDevice = another.m_d3dDevice;
     m_charBuffer = std::move(another.m_charBuffer);
     m_isPRCMap = another.m_isPRCMap;
 
@@ -97,9 +100,15 @@ void CCharRenderer::CloseFT()
 
         m_ftFace = nullptr;
         m_ftLibrary = nullptr;
+        m_d3dDevice = nullptr;
         m_charBuffer.clear();
         m_isPRCMap = false;
     }
+}
+
+void CCharRenderer::SetD3DDevice(IDirect3DDevice9* device)
+{
+    m_d3dDevice = device;
 }
 
 bool CCharRenderer::LoadFont(const std::filesystem::path& filename, int face_index)
@@ -148,7 +157,7 @@ bool CCharRenderer::LoadFont(const std::filesystem::path& filename, int face_ind
     }
 }
 
-const SCharTexture& CCharRenderer::LazyGetCharData(std::uint16_t code)
+SCharTexture CCharRenderer::LazyGetCharData(std::uint16_t code)
 {
     if (!FaceLoaded())
         return m_specialChar;
@@ -211,7 +220,7 @@ void CCharRenderer::ClearCache()
     m_charBuffer.clear();
 }
 
-SCharTexture CCharRenderer::MakeCharData(std::uint16_t code) const
+SCharTexture CCharRenderer::MakeCharData(std::uint16_t code)
 {
     std::uint16_t actual_code = code;
 
@@ -227,11 +236,12 @@ SCharTexture CCharRenderer::MakeCharData(std::uint16_t code) const
         )
     {
         SCharTexture result;
-
         std::vector<unsigned char> pixels;
 
+        unsigned char* bitmap_buffer = m_ftFace->glyph->bitmap.buffer;
         int bitmap_width = m_ftFace->glyph->bitmap.width;
         int bitmap_height = m_ftFace->glyph->bitmap.rows;
+        int bitmap_stride = abs(m_ftFace->glyph->bitmap.pitch);
         int bitmap_top = m_ftFace->glyph->bitmap_top;
         int bitmap_left = m_ftFace->glyph->bitmap_left;
 
@@ -240,44 +250,30 @@ SCharTexture CCharRenderer::MakeCharData(std::uint16_t code) const
 
         pixels.resize(texture_width * texture_height, 0);
 
-        /*
-        cv::Mat temp_bitmap(
-            bitmap_height,
-            bitmap_width,
-            CV_8UC1,
-            m_ftFace->glyph->bitmap.buffer,
-            abs(m_ftFace->glyph->bitmap.pitch));
+        int start_x = bitmap_left + FTLeftAdjust;
+        int start_y = -bitmap_top + FTTopAdjust;
 
-        actual_bitmap.create(
-            ,
-          ,
-            CV_8UC1);
+        if (start_x < 0 || (start_x + bitmap_width) > texture_width)
+            start_x = 0;
 
-        actual_bitmap = cv::Scalar::all(0.0);
+        if (start_y < 0 || (start_y + bitmap_height) > texture_height)
+            start_y = 0;
 
-        cv::Rect dest_rect(
-            bitmap_left + FTLeftAdjust,
-            -bitmap_top + FTTopAdjust,
-            temp_bitmap.cols,
-            temp_bitmap.rows
-        );
+        for (int row_index = 0; row_index < bitmap_height; ++row_index)
+        {
+            std::memcpy(pixels.data() + (row_index + start_y) * texture_width + start_x,
+                bitmap_buffer + row_index * bitmap_stride,
+                bitmap_width);
+        }
 
-        if (dest_rect.x < 0 || (dest_rect.x + temp_bitmap.cols) > actual_bitmap.cols)
-            dest_rect.x = 0;
-
-        if (dest_rect.y < 0 || (dest_rect.y + temp_bitmap.rows) > actual_bitmap.rows)
-            dest_rect.y = 0;
-
-        temp_bitmap.copyTo(actual_bitmap(dest_rect));
-        */
         result.gta_width = static_cast<int>(ceil(Fix26_6ToFloat(m_ftFace->glyph->advance.x) / 2)) + FTLeftAdjust;
-
+        result.texture = PixelsToTexture(m_d3dDevice, pixels, texture_width, texture_height);
 
         return result;
     }
     else
     {
-        return m_specialChar;
+        return GetSpecialChar();
     }
 }
 
@@ -285,17 +281,24 @@ SCharTexture CCharRenderer::MakeSpecialChar()
 {
     SCharTexture result;
 
-    /*
-    result.bitmap_width = GTABitmapWidth;
-    result.bitmap_height = GTABitmapHeight;
-    result.bitmap_stride = GTABitmapWidth;
-    result.bitmap_top = 0;
-    result.bitmap_left = 0;
-    result.gta_width = 32;
-    result.bitmap_pixels.create(GTABitmapHeight, GTABitmapWidth, CV_8UC1);
-    result.bitmap_pixels = cv::Scalar::all(255.0);
-    */
+    std::vector<unsigned char> pixels;
+
+    pixels.resize(GTABitmapWidth * GTABitmapHeight, 255);
+
+    result.gta_width = GTABitmapWidth / 2;
+    result.texture = PixelsToTexture(m_d3dDevice, pixels, GTABitmapWidth, GTABitmapHeight);
+
     return result;
+}
+
+SCharTexture CCharRenderer::GetSpecialChar()
+{
+    if (m_specialChar.texture == nullptr)
+    {
+        m_specialChar = MakeSpecialChar();
+    }
+
+    return m_specialChar;
 }
 
 float CCharRenderer::Fix26_6ToFloat(long fix_point)
@@ -306,4 +309,24 @@ float CCharRenderer::Fix26_6ToFloat(long fix_point)
 float CCharRenderer::Fix16_16ToFloat(long fix_point)
 {
     return fix_point / 65536.0f;
+}
+
+IDirect3DTexture9* CCharRenderer::PixelsToTexture(IDirect3DDevice9* dev, const std::vector<unsigned char>& pixels, int width, int height)
+{
+    IDirect3DTexture9* result = nullptr;
+
+    dev->CreateTexture(width, height, 1, 0, D3DFMT_A8, D3DPOOL_MANAGED, &result, nullptr);
+
+    D3DLOCKED_RECT locked_rect;
+
+    result->LockRect(0, &locked_rect, nullptr, 0);
+
+    for (int row_index = 0; row_index < height; ++row_index)
+    {
+        std::memcpy(reinterpret_cast<unsigned char*>(locked_rect.pBits) + row_index * locked_rect.Pitch, pixels.data() + row_index * width, width);
+    }
+
+    result->UnlockRect(0);
+
+    return result;
 }

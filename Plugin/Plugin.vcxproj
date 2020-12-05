@@ -79,7 +79,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;PLUGIN_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <AdditionalIncludeDirectories>../common/json;../common/freetype;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../common;../common/json;../common/freetype;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -93,7 +93,8 @@
   <ItemGroup>
     <ClInclude Include="batch_matching.h" />
     <ClInclude Include="byte_pattern.h" />
-    <ClInclude Include="CCharRenderer.h" />
+    <ClInclude Include="chars.h" />
+    <ClInclude Include="renderer.h" />
     <ClInclude Include="font.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="plugin.h" />
@@ -102,7 +103,7 @@
   <ItemGroup>
     <ClCompile Include="batch_matching.cpp" />
     <ClCompile Include="byte_pattern.cpp" />
-    <ClCompile Include="CCharRenderer.cpp" />
+    <ClCompile Include="renderer.cpp" />
     <ClCompile Include="dllmain.cpp" />
     <ClCompile Include="font.cpp" />
     <ClCompile Include="game.cpp" />
