@@ -1,34 +1,25 @@
 ﻿#include "font.h"
 #include "game.h"
 #include "plugin.h"
-#include "table.h"
 #include "renderer.h"
 
 CFont FontObject;
 
 static const float fChsWidth = 32.0f;
-static const float fSpriteWidth = 64.0f;
-static const float fSpriteHeight = 80.0f;
-static const float fTextureResolution = 4096.0f;
-static const float fTextureRowsCount = 51.2f;
-static const float fTextureColumnsCount = 64.0f;
-static const float fRatio = 4.0f;
-
-static void* pChsFont;
 
 bool CFont::IsNaiveCharacter(std::uint16_t character)
 {
     return (character < 0x100 || character == 0xFFFF);
 }
 
+#include "chars.h"
 void* __fastcall CFont::LoadTextureHook(void* pDictionary, int, std::uint32_t hash)
 {
+    //预先渲染文本中出现的字符
+    FontObject.renderer.SetD3DDevice(*GameMeta.ppDirect3DDevice9);
+    FontObject.renderer.CacheChars(cache_chars);
 
-    void* result = CGame::Dictionary_GetElementByKey(pDictionary, hash);
-
-    pChsFont = CGame::Dictionary_GetElementByKey(pDictionary, CGame::Hash_HashStringFromSeediCase("font_chs"));
-
-    return result;
+    return CGame::Dictionary_GetElementByKey(pDictionary, hash);
 }
 
 std::uint16_t* CFont::SkipAWord(std::uint16_t* text)
@@ -117,6 +108,8 @@ void CFont::PrintCHSChar(float posx, float posy, std::uint16_t character)
 {
     CRageRect screenrect, texturerect;
 
+    IDirect3DDevice9* dev = *GameMeta.ppDirect3DDevice9;
+
     if (posy < -0.06558f || posy > 1.0f)
     {
         return;
@@ -127,9 +120,8 @@ void CFont::PrintCHSChar(float posx, float posy, std::uint16_t character)
         return;
     }
 
-    auto pos = TableObject.GetCharPos(character);
+    auto char_texture = FontObject.renderer.LazyGetCharData(character);
 
-    float sprite_width = fSpriteWidth / fTextureResolution;
     float character_width = (fChsWidth / *GameMeta.pFont_ResolutionX + GameMeta.pFont_RenderState->fEdgeSize) * GameMeta.pFont_RenderState->fScaleX;
     float character_height = GameMeta.pFont_RenderState->fScaleY * 0.06558f;
 
@@ -138,21 +130,31 @@ void CFont::PrintCHSChar(float posx, float posy, std::uint16_t character)
     screenrect.fTopRightX = posx + character_width;
     screenrect.fTopRightY = posy;
 
+#if 1
+    texturerect.fBottomLeftX = 0.0f;
+    texturerect.fBottomLeftY = 1.0f;
+    texturerect.fTopRightY = 7.0f / char_texture.height;
+    texturerect.fTopRightX = 1.0f;
+#else
+    //row*80+7
     texturerect.fTopRightY = (pos.row - 0.045f / fRatio) * fSpriteHeight / fTextureResolution + 8.0f / fTextureResolution;
     if (texturerect.fTopRightY > 1.0f)
     {
         texturerect.fTopRightY = 1.0f;
     }
+
+    //row*80+82
     texturerect.fBottomLeftY = (pos.row - 0.045f / fRatio) * fSpriteHeight / fTextureResolution + 79.0f / fTextureResolution - 0.001f / fRatio + 0.0048f / fRatio;
     texturerect.fBottomLeftX = pos.column / fTextureColumnsCount;
     texturerect.fTopRightX = pos.column / fTextureColumnsCount + sprite_width;
+#endif
 
     switch (GameMeta.pFont_RenderState->nFont)
     {
     case 0:
     case 1:
     case 3:
-        CGame::Graphics_SetRenderState(pChsFont);
+        dev->SetTexture(0, char_texture.texture);
         break;
 
     default:

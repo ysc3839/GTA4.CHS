@@ -98,7 +98,6 @@
     <ClInclude Include="font.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="plugin.h" />
-    <ClInclude Include="table.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="batch_matching.cpp" />
@@ -108,7 +107,6 @@
     <ClCompile Include="font.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="plugin.cpp" />
-    <ClCompile Include="table.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="Note.txt" />

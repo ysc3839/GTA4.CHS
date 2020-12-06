@@ -14,6 +14,7 @@
 
 struct SCharTexture
 {
+    int width, height;
     int gta_width;
     IDirect3DTexture9* texture;
 };

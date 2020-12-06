@@ -5,6 +5,7 @@ class CPlugin
 {
 public:
     bool Init(HMODULE);
+    bool GetMemoryAddresses();
     bool PatchGame();
     std::string ReadFontFileName(const std::filesystem::path &filename);
 };

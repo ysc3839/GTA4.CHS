@@ -5,37 +5,37 @@
 class CGame
 {
 public:
-    //A1 ? ? ? ? 68 (? ? ? ?) 8B 08 68 ? ? ? ? 6A 14
+    //8B 3D (? ? ? ?) 89 54 24 10
     IDirect3DDevice9** ppDirect3DDevice9;
 
-    //80 7C 24 08 00 A1
+    //A1 ? ? ? ? 80 7C 24 08 00
     void* pGraphics_SetRenderState;
 
-    //85 C9 53 55 56 57 74 40 两个结果，选哪个都可以
+    //53 55 56 57 8B F9 85 FF 74 3F
     void* pDictionary_GetElementByKey;
 
-    //8B 4C 24 08 56 8B 74 24 08 80 3E 22
+    //8B 54 24 08 53 56 8B 74 24 0C 80 3E 22
     void* pHash_HashStringFromSeediCase;
 
-    //8D 0C C5 (? ? ? ?) 51 8D
+    //8B 34 ED (? ? ? ?) 0F 2E C1
     CFontDetails* pFont_Details;
 
-    //83 C6 2C 83 C7 01 81 FE (? ? ? ?)
+    //81 3D (? ? ? ?) AD 7F 33 31
     CFontRenderState* pFont_RenderState;
 
-    //D8 35 (? ? ? ?) 5E D8 05
+    //F3 0F 11 05 (? ? ? ?) 66 0F 6E 84 24 AC 00 00
     float* pFont_ResolutionX;
 
     //A1 ? ? ? ? 83 F8 FF 75 1E
     void* pFont_GetRenderIndex;
 
-    //83 EC 34 83 3D ? ? ? ? FF
+    //83 EC 30 83 3D ? ? ? ? FF
     void* pFont_PrintChar;
 
-    //83 EC 08 56 57 E8
+    //51 55 56 E8
     void* pFont_GetCharacterSizeNormal;
 
-    //51 A0 ? ? ? ? 0F B6 15
+    //8A 0D ? ? ? ? 0F B6 D1
     void* pFont_GetCharacterSizeDrawing;
 
     //83 EC 10 8B 44 24 14 F3 0F 7E 00
