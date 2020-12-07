@@ -6,7 +6,7 @@
 
 static const char * __stdcall GetTextFileName(int)
 {
-    return "CHINESE.GXT";
+    return "../../CHS/CHINESE.GXT";
 }
 
 namespace Plugin
@@ -121,6 +121,13 @@ namespace Plugin
 
         //存档名字读双字节
 
+        // platform:/textures/fonts -> common:/../CHS/fonts
+        batch_matching::get_instance().register_step("70 6C 61 74 66 6F 72 6D 3A 2F 74 65 78 74 75 72 65 73 2F 66 6F 6E 74 73 00", 2, [](const std::vector<memory_pointer> &addresses)
+        {
+            constexpr char str[] = "common:/../CHS/fonts";
+            injector::WriteMemoryRaw(addresses[0].i(), const_cast<char*>(str), std::size(str), true);
+            injector::WriteMemoryRaw(addresses[1].i(), const_cast<char*>(str), std::size(str), true);
+        });
     }
 
     bool Init(HMODULE module)
