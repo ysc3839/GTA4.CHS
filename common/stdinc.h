@@ -43,7 +43,6 @@ struct CharacterPos
 struct CharacterData
 {
     std::uint32_t code;
-    CharacterPos pos;
 };
 
 #define VALIDATE_SIZE(expr, size) static_assert(sizeof(expr) == size, "Wrong size.");

@@ -16,9 +16,21 @@ void CCharacterTable::LoadTable(const std::filesystem::path& filename)
 
     m_Table.reserve(buffer.size() * 2);
 
+    CharacterPos pos;
+    pos.row = 0;
+    pos.column = 0;
+
     for (auto& entry : buffer)
     {
-        m_Table.insert_or_assign(entry.code, entry.pos);
+        if (pos.column == 64)
+        {
+            ++pos.row;
+            pos.column = 0;
+        }
+
+        m_Table.insert_or_assign(entry.code, pos);
+
+        ++pos.column;
     }
 }
 

@@ -320,21 +320,10 @@ void IVText::GenerateTable(const tPath& output_binary) const
 
     CharacterData data;
 
-    data.pos.row = 0;
-    data.pos.column = 0;
-
     for (auto chr : m_Collection)
     {
         data.code = chr;
-        if (data.pos.column == 64)
-        {
-            ++data.pos.row;
-            data.pos.column = 0;
-        }
-
         datas.push_back(data);
-
-        ++data.pos.column;
     }
 
     BinaryFile stream(output_binary, BinaryFile::OpenMode::WriteOnly);
